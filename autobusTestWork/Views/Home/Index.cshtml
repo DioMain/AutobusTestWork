@@ -1,0 +1,55 @@
+﻿@using autobusTestWork.Entity.Models
+@model List<Link>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div>
+    <table class="table text-center">
+        <thead>
+            <tr>
+                <th scope="col">Long url</th>
+                <th scope="col">Short url</th>
+                <th scope="col">Created</th>
+                <th scope="col">Redirect count</th>
+                <th scope="col">Options</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(Link link in Model)
+            {
+                <tr>
+                    <th scope="row">@link.LongUrl</th>
+                    <td><a href="@link.ShortUrl">@link.ShortUrl</a></td>
+                    <td>@link.Created.ToLocalTime()</td>
+                    <td>@link.RedirectCount</td>
+                    <td>
+                        <button type="button" class="btn btn-danger" onclick="deleteLink(@link.Id)">DEL</button>
+                        <button type="button" class="btn btn-primary" onclick="redirectToEdit(@link.Id)">EDIT</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="d-flex flex-row justify-content-end">
+        <button type="button" class="btn btn-success" onclick="redirectToCreate()">CREATE</button>
+    </div>
+
+    <script>
+        function redirectToCreate() {
+            window.location.assign(`/Home/CreateLink`);
+        }
+
+        function redirectToEdit(id) {
+            window.location.assign(`/Home/EditLink?id=${id}`);
+        }
+
+        function deleteLink(id) {
+            fetch(`/Home/DeleteLink?id=${id}`, { method: "DELETE" })
+                .then(() => {
+                    window.location.reload();
+                });
+        }
+    </script>
+</div>

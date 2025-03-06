@@ -1,0 +1,27 @@
+﻿@using autobusTestWork.Models
+@model LinkModel
+
+@{
+    ViewData["Title"] = "Create/Edit link";
+}
+
+<div style="margin-top: 64px" class="text-center">
+    <h1>
+        @if (!Model.Id.HasValue)
+        {
+            <span>Link creation</span>
+        }
+        else
+        {
+            <span>Link editing</span>
+        }
+    </h1>
+
+    <form method="post" asp-action="CreateUpdateLink">
+        <input type="hidden" asp-for="@Model.Id" value="@Model.Id"/>
+        <input asp-for="@Model.LongUrl" type="text" class="form-control" placeholder="https://example.com" value="@Model.LongUrl"/>
+        <input class="btn btn-primary" type="submit" style="margin-top: 8px"/>
+    </form>
+
+    <div class="text-danger">@Model.Error</div>
+</div>
