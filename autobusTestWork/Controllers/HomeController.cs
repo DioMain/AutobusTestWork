@@ -1,26 +1,26 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using autobusTestWork.Models;
-using autobusTestWork.Entity.Models;
-using autobusTestWork.Entity.Repositories;
-using autobusTestWork.Services;
+using autobusTestWork.Application.Services;
+using autobusTestWork.Persistence.Repositories;
+using autobusTestWork.Core.Models;
 
 namespace autobusTestWork.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly LinkRepository _linkRepository;
+    private readonly DataService _data;
     private readonly UrlHashService _urlHasher;
 
-    public HomeController(NHibernate.ISession nhibernateSession, UrlHashService urlHasher)
+    public HomeController(DataService dataService, UrlHashService urlHasher)
     {
-        _linkRepository = new LinkRepository(nhibernateSession);
+        _data = dataService;
         _urlHasher = urlHasher;
     }
 
     public async Task<IActionResult> Index()
     {
-        List<Link> links = await _linkRepository.GetAll();
+        List<Link> links = await _data.Links.GetAll();
 
         return View(links);
     }
@@ -32,7 +32,7 @@ public class HomeController : Controller
 
     public async Task<IActionResult> EditLink([FromQuery] int id)
     {
-        var link = await _linkRepository.Get(id);
+        var link = await _data.Links.Get(id);
 
         if (link == null)
             return RedirectToAction("Index");
@@ -49,7 +49,7 @@ public class HomeController : Controller
             return View("CreateEdit", model);
         }
 
-        var checkLink = await _linkRepository.GetByLongUrl(model.LongUrl);
+        var checkLink = await _data.Links.GetByLongUrl(model.LongUrl);
 
         if (checkLink != null && checkLink.Id != model.Id)
         {
@@ -69,11 +69,11 @@ public class HomeController : Controller
                 RedirectCount = 0
             };
 
-            await _linkRepository.Insert(nLink);
+            await _data.Links.Insert(nLink);
         }
         else
         {
-            Link? link = await _linkRepository.Get(model.Id.Value);
+            Link? link = await _data.Links.Get(model.Id.Value);
 
             if (link == null)
                 return RedirectToAction("Index");
@@ -81,7 +81,7 @@ public class HomeController : Controller
             link.LongUrl = model.LongUrl;
             link.ShortUrl = hashedUrl;
 
-            await _linkRepository.Update(link);
+            await _data.Links.Update(link);
         }
 
         return RedirectToAction("Index");
@@ -90,12 +90,12 @@ public class HomeController : Controller
     [HttpDelete]
     public async Task<IResult> DeleteLink([FromQuery] int id)
     {
-        var link = await _linkRepository.Get(id);
+        var link = await _data.Links.Get(id);
 
         if (link == null)
             return Results.Problem(statusCode: 404);
 
-        await _linkRepository.Delete(link);
+        await _data.Links.Delete(link);
 
         return Results.Ok();
     }
@@ -105,12 +105,12 @@ public class HomeController : Controller
     {
         string fullUrl = $"http://localhost:{HttpContext.Request.Host.Port}{HttpContext.Request.Path}";
 
-        var link = await _linkRepository.GetByShortUrl(fullUrl);
+        var link = await _data.Links.GetByShortUrl(fullUrl);
 
         if (link == null)
             return RedirectToAction("Index");
 
-        await _linkRepository.AddRedirectCount(link.Id);
+        await _data.Links.AddRedirectCount(link.Id);
 
         return Redirect(link.LongUrl);
     }

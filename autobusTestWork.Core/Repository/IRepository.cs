@@ -1,4 +1,4 @@
-﻿namespace autobusTestWork.Entity.Repositories;
+﻿namespace autobusTestWork.Core.Repository;
 
 public interface IRepository<T>
 {

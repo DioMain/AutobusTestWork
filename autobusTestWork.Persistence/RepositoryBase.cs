@@ -1,12 +1,13 @@
-﻿using NHibernate;
+﻿using autobusTestWork.Core.Repository;
+using NHibernate;
 
-namespace autobusTestWork.Entity.Repositories;
+namespace autobusTestWork.Persistence;
 
 public abstract class RepositoryBase<T> : IRepository<T>
 {
-    protected NHibernate.ISession HibernateSession;
+    protected ISession HibernateSession;
 
-    public RepositoryBase(NHibernate.ISession session)
+    public RepositoryBase(ISession session)
     {
         HibernateSession = session;
     }

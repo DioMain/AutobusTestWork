@@ -1,7 +1,8 @@
-﻿using autobusTestWork.Entity.Models;
+﻿using autobusTestWork;
+using autobusTestWork.Core.Models;
 using FluentNHibernate.Mapping;
 
-namespace autobusTestWork.Entity.Mappings;
+namespace autobusTestWork.Persistence.Mappings;
 
 public class LinkMap : ClassMap<Link>
 {

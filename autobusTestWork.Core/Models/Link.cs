@@ -1,4 +1,4 @@
-﻿namespace autobusTestWork.Entity.Models;
+﻿namespace autobusTestWork.Core.Models;
 
 public class Link
 {

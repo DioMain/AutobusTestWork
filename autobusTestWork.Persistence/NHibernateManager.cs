@@ -1,11 +1,12 @@
 ﻿using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
+using Microsoft.Extensions.DependencyInjection;
 using MySql.Data.MySqlClient;
 using NHibernate;
 using NHibernate.Tool.hbm2ddl;
 using System.Reflection;
 
-namespace autobusTestWork.Entity;
+namespace autobusTestWork.Persistence;
 
 public class NHibernateManager
 {

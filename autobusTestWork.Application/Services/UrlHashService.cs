@@ -1,8 +1,7 @@
-﻿using Org.BouncyCastle.Utilities;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace autobusTestWork.Services;
+namespace autobusTestWork.Application.Services;
 
 public class UrlHashService
 {

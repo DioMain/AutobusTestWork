@@ -1,5 +1,5 @@
-using autobusTestWork.Entity;
-using autobusTestWork.Services;
+using autobusTestWork.Application.Services;
+using autobusTestWork.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +12,8 @@ string connectionString = builder.Configuration.GetConnectionString("DefaultConn
 var nhibernate = new NHibernateManager(connectionString);
 
 nhibernate.AddNHibernate(builder.Services);
+
+builder.Services.AddScoped<DataService>();
 
 var app = builder.Build();
 
